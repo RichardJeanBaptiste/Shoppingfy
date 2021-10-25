@@ -4,14 +4,18 @@
   lg: 1200
 */
 
+
+/* Left Nav Styles*/
 .App {
-  font-family: "Quicksand"; 
+  font-family: "Quicksand";
+  display: flex;
+  flex-direction: row; 
 }
 
 .LeftNav {
   display: flex;
   flex-direction: column;
-  width: 5%;
+  width: 7%;
   height: 100vh;
 }
 
@@ -58,6 +62,15 @@
   margin-top: -10px;
 }
 
+.IconHoverInfo {
+  width: 65px;
+  height: 20px;
+  border-radius: 4px;
+  background-color: #454545;
+  margin-top: 1px;
+  margin-left: 15px;
+}
+
 .CartIconBackground {
   border-radius: 28px;
   width: 42px;
@@ -74,5 +87,51 @@
   border-radius: 4px;
 }
 
+/* Center Styles*/
 
+.CenterContainer {
+  width: 90em;
+  margin-left: 2%;
+  background-color: #f1f1f1;
+}
 
+.CenterTitle {
+  display: flex;
+  flex-direction: row;
+  margin-left: 9%;
+}
+
+.SearchStyle {
+  height: 56px;
+  width: 30em;
+  margin-top: 2em;
+}
+
+.ItemSectionStyle {
+  margin-top: 2%;
+  margin-left: 5%;
+  margin-bottom: 4%;
+}
+
+/* Search Styles*/
+
+.SearchContainer {
+  width: 28%;
+  background-color: #FFF0DE;
+}
+
+.AddItemContainer {
+  display: flex;
+  flex-direction: row;
+  background-color: #80485B;
+  border-radius: 24px;
+  width: 80%;
+  height: 22%;
+  margin-top: 17%;
+  margin-left: 11%;
+}
+
+.AddItemContainer2 {
+  display: flex;
+  flex-direction: column;
+}
