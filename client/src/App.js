@@ -2,14 +2,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LOGO from './assets/logo.svg';
 import SOURCE from './assets/source.svg';
-import { ListUl, ArrowCounterclockwise, FileEarmarkBarGraph, Search, PlusLg, PenFill, X } from 'react-bootstrap-icons';
+import { ListUl, ArrowCounterclockwise, FileEarmarkBarGraph, Search, PlusLg, PenFill, } from 'react-bootstrap-icons';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Form from 'react-bootstrap/Form';
+//import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
-import Modal from 'react-bootstrap/Modal';
+//import Modal from 'react-bootstrap/Modal';
 import Button  from 'react-bootstrap/Button';
 import CartIcon from './components/CartIcon';
 import LeftNavIcon from './components/LeftNavIcon';
+import AddItemModal from './components/AddItemModal';
+import ShoppingList from './components/ShoppingList';
 import { v4 as uuidv4} from 'uuid';
 import { useState } from 'react';
 
@@ -36,8 +38,7 @@ function App() {
   // Shopping List Functions
   const [ shoppingList, setShoppingList ] = useState([]);
   //const [ newEntry, setNewEntry ] = useState({});
-  //Shopping List Functions
-
+  
 
 
   // Item Section Component
@@ -47,8 +48,8 @@ function App() {
     let data = props.Data;
 
     function ItemCell(props) {
-        let cellItem = props.Item
-        let cellTitle = props.Title
+        //let cellItem = props.Item
+        //let cellTitle = props.Title
         return (
             <div style={{display: 'flex', flexDirection:'row', marginLeft:'2%'}}>
                 <div style={{ display: 'flex', flexDirection:'row', width: '16em', height: '65px', backgroundColor:'white', borderRadius:'12px'}}>
@@ -56,7 +57,7 @@ function App() {
                         {props.Item}
                     </p>
                     
-                    <PlusLg style={{ marginTop:'8%', marginLeft: '7%',color: '#C1C1C4'}} />
+                    <PlusLg style={{ marginTop:'8%', marginLeft: '7%',color: '#C1C1C4'}} onClick={props.click}/>
                     
                 </div>
             </div>
@@ -70,12 +71,16 @@ function App() {
 
         data.map((food, i) => {
    
+          const cellHandler = () => {
+            alert(food)
+          }
+
             if(count !== 4){
-                temp.push(<ItemCell Title={props.Title} Item={food} key={i}/>)
+                temp.push(<ItemCell Title={props.Title} Item={food} key={i} click={cellHandler}/>)
                 count++;
             }else if(count === 4){
 
-                temp.push(<ItemCell Item={food} key={i}/>)
+                temp.push(<ItemCell Item={food} key={i} click={cellHandler} />)
                 let tempMap = temp.map((item) => {
                     return item;
                 })
@@ -129,59 +134,7 @@ function App() {
 }
   // Item Section Component
 
-  // Add Item Modal
-
-    function AddItemModal() {
-
-      const [ category, setCategory ] = useState("");
-      const [ food, setFood ] = useState("");
-      const handleCategoryChange = (e) => setCategory(e.target.value);
-      const handleFoodChange = (e) => setFood(e.target.value);
-      const handleAddItem = () => {
-        let x = itemList;
-
-        x.push({
-          Title: category,
-          Items: [food]
-        })
-
-        setItemList(x)
-
-        setShow(false)
-      }
-      
-        return (
-          <>
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Add a New Item</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                  <Form>
-                      <Form.Group>
-                          <Form.Label>Category</Form.Label>
-                          <Form.Control type="text" placeholder="Enter Category" onChange={handleCategoryChange}/>
-                      </Form.Group>
-
-                      <Form.Group>
-                          <Form.Label>Food</Form.Label>
-                          <Form.Control type="text" placeholder="Enter Food" onChange={handleFoodChange}/>
-                      </Form.Group>
-                  </Form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="primary" onClick={handleAddItem}>
-                  Save Changes
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </>
-        )
-    }
-  // Add Item Modal
+ 
 
  
   return (
@@ -231,7 +184,7 @@ function App() {
             </InputGroup>
           </div>
 
-          <AddItemModal/>
+          <AddItemModal Data={itemList} show={show} setShow={setShow} setData={setItemList} handleShow={handleShow} handleClose={handleClose}/>
           
           <div style={{ marginTop: '5%'}}>
               {/***************** Items ***************/}
@@ -260,8 +213,9 @@ function App() {
           <div style={{ display:'flex', flexDirection: 'row', width: '25em', marginLeft:'12%', marginTop:'4em'}}>
               <p style={{ color:'#34333A', fontSize:'24px', lineHeight:'30px', fontWeight:700}}>Shopping list</p>
               <PenFill style={{ fontSize: '18px', marginLeft:'49%', marginTop:'1%'}}/>
-
           </div>
+
+          <ShoppingList/>
       </div>
 
     </div>
