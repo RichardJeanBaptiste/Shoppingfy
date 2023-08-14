@@ -1,0 +1,25 @@
+.root {
+    background-color: #FFF0DE;
+    width: 30em;
+    height: 50em;
+    border-color: black;
+    border-width: 1px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+}
+
+.formControl {
+    width: 27em;
+    background-color: white;
+}
+.form1 {
+    margin-left: 5%;
+    margin-top: 20%;
+}

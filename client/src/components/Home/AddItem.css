@@ -1,0 +1,88 @@
+.add_item_root {
+    background: #FAFAFE;
+    flex : 1;
+    height: 100vh;
+    font-family: Quicksand;
+}
+
+.add_div {
+    margin-top: 10%;
+    margin-left : 10%;
+    width: 100%;
+    background: #FAFAFE;
+    display: flex;
+    flex-direction: column;
+}
+
+.add_title {
+    color: #000;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: bolder;
+    line-height: normal;
+    padding-bottom: 1em;
+}
+
+
+.add_item_form label{
+    color: #34333A;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bolder;
+}
+
+.add_textarea {
+    display: flex;
+    flex-direction: row;
+}
+
+.add_input1 {
+    border-radius: 12px;
+    border: 2px solid #BDBDBD;
+    width: 309.887px;
+    height: 61.25px;
+}
+
+.add_input2 {
+    width: 309.887px;
+    height: 110.215px;
+    border-radius: 12px;
+    border: 2px solid #BDBDBD;
+}
+
+.add_input3 {
+    width: 309.887px;
+    height: 61.25px;
+    border-radius: 12px;
+    border: 2px solid #BDBDBD;
+    margin-top: 7%;
+}
+
+.button_group {
+    display: flex;
+    flex-direction: row;
+    margin-top: 15%;
+}
+
+.cancel_button {
+    color: #34333A;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+.save_button {
+    background: #F9A109;
+    border-radius: 12px;
+    width: 87.348px;
+    height: 61.25px;
+    color: white;
+    font-family: Quicksand;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bolder;
+    line-height: normal;
+}
+
