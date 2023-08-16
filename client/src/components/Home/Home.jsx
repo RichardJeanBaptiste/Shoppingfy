@@ -16,30 +16,55 @@ import AddItem from './AddItem';
 export default function Home() {
 
     let { userId } = useParams();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
-    
     const [ ShowAddItem, SetShowAddItem ] = useState(false);
     const [ ItemList, SetItemList ] = useState([]);
+    const [ Categories, SetCategories] = useState([]);
+    const [ Refetch, SetRefetch ] = useState(false);
+
+    
 
     useEffect(() => {
 
         axios.post('/get_items', {
-           USERID: userId,
-        }).then((response) => {
-            if(response.status === 200){
-                //console.log(response.data);
-                const tempArr = Object.entries(response.data).map(([key, value]) => ({ key, value}));
-                SetItemList(tempArr);
-            } else {
-                console.log("Failed request");
-            }
-        }).catch((error) => {
-            console.log(error);
-        })    
-        
+            USERID: userId,
+         }).then((response) => {
+             if(response.status === 200){
+                 //console.log(response.data);
+                 const tempArr = Object.entries(response.data).map(([key, value]) => ({ key, value}));
+                 const tempCatArr = Object.entries(response.data).map(([key]) => ({ key }));
+                 SetItemList(tempArr);
+                 SetCategories(tempCatArr);
+             } else {
+                 console.log("Failed request");
+             }
+         }).catch((error) => {
+             console.log(error);
+         })     
     },[userId]);
-    
+
+    useEffect(() => {
+        if(Refetch){
+            axios.post('/get_items', {
+                USERID: userId,
+             }).then((response) => {
+                 if(response.status === 200){
+                     //console.log(response.data);
+                     const tempArr = Object.entries(response.data).map(([key, value]) => ({ key, value}));
+                     const tempCatArr = Object.entries(response.data).map(([key]) => ({ key }));
+                     SetItemList(tempArr);
+                     SetCategories(tempCatArr);
+                     SetRefetch(false);
+                 } else {
+                     console.log("Failed request");
+                 }
+             }).catch((error) => {
+                 console.log(error);
+             })  
+        }
+
+    },[userId, Refetch]);
 
     const show = () => {
         if(ShowAddItem) {
@@ -73,7 +98,7 @@ export default function Home() {
                 <div className='item_container'>
                     {props.Items.map((x, index) => {
                         return (
-                            <div className='item_cell'>
+                            <div className='item_cell' key={index}>
                                 <div key={uuidv4()}>
                                     <p onClick={() => alert(`${x[0]} - ${x[1]} - ${x[2]}`)}>{x[0]}</p>
                                     <FontAwesomeIcon icon={faPlus} />
@@ -92,7 +117,11 @@ export default function Home() {
 
         if(ShowAddItem){
             return (
-                <AddItem close={show}/>
+                <AddItem  
+                    refetchBoolFunc = {SetRefetch}                
+                    categories={Categories} 
+                    close={show}
+                />
             )
         } else {
 

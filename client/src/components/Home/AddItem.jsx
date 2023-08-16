@@ -2,8 +2,12 @@ import './AddItem.css';
 import Button from "react-bootstrap/esm/Button";
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function AddItem(props) {
+
+    let { userId } = useParams();
 
     const [ name, setName ] = useState("");
     const [ note, setNote ] = useState("");
@@ -38,7 +42,23 @@ export default function AddItem(props) {
     }
 
     const submitHandler = () => {
-        alert(`${name} - ${note} - ${imgUrl} - ${category}`);
+        //alert(`${name} - ${note} - ${imgUrl} - ${category}`);
+        
+        axios.post('http://localhost:5000/add_items', {
+            USERID: userId,
+            Category: category,
+            IMG: imgUrl,
+            Note: note,
+            New_Item: name,
+         }).then((response) => {
+             if(response.status === 200){
+                props.refetchBoolFunc(true);
+             } else {
+                //navigate('/login')   
+             }
+         }).catch((error) => {
+             console.log(error);
+         }) 
     }
 
     return (
@@ -68,9 +88,11 @@ export default function AddItem(props) {
                         <Form.Label>Category</Form.Label>
                         <Form.Select className='add_input1' onClick={optionHandler}>
                             <option>Enter a category</option>
-                            <option value="Fruits and vegetables">Fruits and vegetables</option>
-                            <option value="Meat and Fish">Meat and Fish</option>
-                            <option value="Beverages">Beverages</option>
+                            {props.categories.map((x, index) => {
+                                return (
+                                    <option value={x.key} key={index}>{x.key}</option>
+                                )
+                            })}
                             <option value="New Category">New Category</option>
                         </Form.Select>
                         <Form.Control style={{ display: displayCat}}type="text" placeholder='New Category' className='add_input3' onChange={categoryHandler}/>
@@ -88,3 +110,9 @@ export default function AddItem(props) {
         </div>
     )
 }
+
+/**
+ * <option value="Fruits and vegetables">Fruits and vegetables</option>
+                            <option value="Meat and Fish">Meat and Fish</option>
+                            <option value="Beverages">Beverages</option>
+ */

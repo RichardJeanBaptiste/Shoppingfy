@@ -51,12 +51,17 @@ def login():
     x = collection.find_one({"username": username, "password": password})
 
     session['username'] = "qwerty_keyboard"
-  
-    if x == None:
-        return "Not Found"
-    else:
-        session['id'] = str(x['_id'])
-        return str(x['_id']) , 200
+    
+    try:
+        if x == None:
+            return "Not Found"
+        else:
+            session['id'] = str(x['_id'])
+            return str(x['_id']) , 200
+    except:
+        return "Server Error"
+
+    
         
 
 @app.route("/logout", methods=['POST'])
