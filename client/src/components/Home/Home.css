@@ -206,6 +206,19 @@
     margin-top: 1.2%;
 }
 
+.add_item_footer_search {
+    width: 100%;
+    height:7em;
+}
+
+.add_item_footer_button {
+    position: relative;
+    top: -3.8em;
+    left: 18em;
+    width: 87.348px;
+    height: 61.25px;
+}
+
 .emptyList_root{
     position: relative;
     top: 32%;

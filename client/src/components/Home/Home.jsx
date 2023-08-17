@@ -27,7 +27,7 @@ export default function Home() {
     const [ displayItemInfo, SetDisplayItemInfo ] = useState(false);
     const [ currentDisplayItems, SetCurrentDisplayItems] = useState([]);
     const [ emptyList, SetEmptyList ] = useState(true);
-    const [ shoppingList, SetShoppingList ] = useState([]);
+    const [ shoppingList, SetShoppingList ] = useState({});
 
 
     /**
@@ -36,7 +36,7 @@ export default function Home() {
      */
 
     useEffect( () => {
-        if(shoppingList.length != 0){
+        if(Object.keys(shoppingList).length === 1){
             SetEmptyList(false)   
         }
 
@@ -115,6 +115,51 @@ export default function Home() {
             SetDisplayItemInfo(true);
         }
 
+        const addItemToCart = (itemname, itemcategory) => {
+
+            //console.log(shoppingList);
+            /**
+             * Check if category exists
+             * Check if item exists
+             * Check amount
+             */
+            if (itemcategory in shoppingList){
+                
+                let temp2 = { ...shoppingList};
+
+                let itemExists = false;
+
+                temp2[itemcategory].map( (x, index) => {
+
+                    if(x[0] === itemname){
+                        itemExists = true;
+                    }
+                    console.log(x[0]);
+                    return "";
+                })
+                
+                if(!itemExists){
+                    temp2[itemcategory].push([itemname, 1]);
+                }
+
+                SetShoppingList(temp2);
+
+            } else { 
+
+                let temp = {
+                    ...shoppingList,
+                    //itemcategory: [itemname , 1],
+                }
+                
+                temp[itemcategory] = [[itemname, 1]];
+
+                SetShoppingList(temp);
+            }
+
+            console.log(shoppingList);
+
+        }
+
         return (
             <div className='item_category'>
                 <h3 >{props.Title}</h3>
@@ -124,7 +169,7 @@ export default function Home() {
                             <div className='item_cell' key={index}>
                                 <div key={uuidv4()}>
                                     <p onClick={() => openDisplayItems(x[0], x[1], x[2], props.Title)}>{x[0]}</p>
-                                    <FontAwesomeIcon icon={faPlus} />
+                                    <FontAwesomeIcon icon={faPlus} onClick={() => addItemToCart(x[0], props.Title)}/>
                                 </div>
                             </div>  
                         )
@@ -133,6 +178,10 @@ export default function Home() {
                 
             </div>
         )
+    }
+
+    const CurrentList = () => {
+        
     }
 
 
@@ -147,7 +196,9 @@ export default function Home() {
             )
         } else {
             return (
-                <div></div>
+                <div>
+                    
+                </div>
             )
         }
         
@@ -188,7 +239,11 @@ export default function Home() {
     
                     
                     <div className='add_item_footer'>
-                        <Form.Control placeholder='Enter a name'/>
+                        <div className='add_item_footer_search'>
+                            <Form.Control placeholder='Enter a name'/>
+                            <Button className='add_item_footer_button'>Save</Button>
+                        </div>
+                        
                     </div>
                 </div>
             )
@@ -238,3 +293,19 @@ export default function Home() {
     )
 }
 
+ // let itemExists = false;
+
+                // temp2[itemcategory].map( (x, index) => {
+
+                //     if(x[0] === itemname){
+                //         x[1] = x[1] + 1;
+                //         itemExists = true;
+                //     }
+                //     console.log(x[0]);
+                //     return "";
+                // })
+                
+                // if(!itemExists){
+                //     temp2[itemcategory].push([itemname, 1]);
+                // }
+                
