@@ -205,3 +205,25 @@
     margin-left: 3.3%;
     margin-top: 1.2%;
 }
+
+.emptyList_root{
+    position: relative;
+    top: 32%;
+    left: 7em;
+    transform: translate(-50%,-50%);
+}
+
+.emptyListP {
+    color: #34333A;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: bolder;
+    line-height: normal;
+    width: 6em;
+    margin-left: 1em;
+    margin-top: 2em;
+}
+
+.emptyListImg {
+    margin-top: 10em;
+}

@@ -178,3 +178,4 @@ def edit_history():
 #     # Delete the session variable
 #     session.pop('username', None)
 #     return 'Session variable deleted!'
+

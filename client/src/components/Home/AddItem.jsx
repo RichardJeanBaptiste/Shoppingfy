@@ -14,6 +14,7 @@ export default function AddItem(props) {
     const [ imgUrl, setImgUrl ] = useState("");
     const [ category, setCategroy ] = useState("");
     const [displayCat, setDisplayCat] = useState("none");
+    
 
 
     const optionHandler = (e) => {
@@ -42,7 +43,6 @@ export default function AddItem(props) {
     }
 
     const submitHandler = () => {
-        //alert(`${name} - ${note} - ${imgUrl} - ${category}`);
         
         axios.post('http://localhost:5000/add_items', {
             USERID: userId,
@@ -54,14 +54,16 @@ export default function AddItem(props) {
              if(response.status === 200){
                 props.refetchBoolFunc(true);
              } else {
-                //navigate('/login')   
+                alert("Something went wrong!");   
              }
          }).catch((error) => {
              console.log(error);
          }) 
     }
 
+   
     return (
+
         <div className='add_item_root'>
 
             <div className='add_div'>
@@ -110,9 +112,3 @@ export default function AddItem(props) {
         </div>
     )
 }
-
-/**
- * <option value="Fruits and vegetables">Fruits and vegetables</option>
-                            <option value="Meat and Fish">Meat and Fish</option>
-                            <option value="Beverages">Beverages</option>
- */

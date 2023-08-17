@@ -1,0 +1,81 @@
+.di_root {
+    background: #FAFAFE;
+    flex : 1;
+    height: 100vh;
+    font-family: Quicksand;
+}
+
+.di_root2 {
+    margin-left: 7%;
+}
+
+.di_backbutton {
+    display: flex;
+    flex-direction: row;
+    color: #F9A109;
+    margin-top: 2em;
+    margin-left: 2em;
+}
+
+.di_displayimg {
+    width: 18em;
+    height: 13.75em;
+    border-radius: 25px;
+    flex-shrink: 0;
+    margin-top: 2em;
+}
+
+.di_backbutton p {
+    
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bolder;
+    margin-left: 3%;
+    margin-top: -.5%;
+}
+
+.di_info1 {
+    margin-top: 4em;
+}
+
+.di_info1 p{
+    color: #C1C1C4;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: normal;
+    font-style: normal;
+}
+
+
+.di_info1_label {
+    color: black;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.di_confirmButtons {
+    display: flex;
+    display: row;
+    margin-top: 4em;
+    margin-left: 7.5%;
+}
+
+.di_confirmButtons p{
+    color: #34333A;
+    font-size: 16px;
+    font-family: Quicksand;
+    font-style: normal;
+    font-weight: 700;
+    margin-top: 4%;
+}
+
+.di_confirmButtons button{
+    background: #F9A109;
+    border-radius: 12px;
+    width: 123.822px;
+    height: 61.25px;
+    margin-left: 3em;
+    border-color: #F9A109;
+}

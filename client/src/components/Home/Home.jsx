@@ -1,6 +1,7 @@
 import './Home.css';
 import HeartPic from '../../assets/shoppingify-master/logo.svg';
 import WineLogo from '../../assets/shoppingify-master/source.svg';
+import EmptyLogo from '../../assets/shoppingify-master/empty.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faRotateLeft, faSquarePollVertical, faCartShopping, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AddItem from './AddItem';
+import DisplayItem from './DisplayItem';
 
 
 export default function Home() {
@@ -22,7 +24,23 @@ export default function Home() {
     const [ ItemList, SetItemList ] = useState([]);
     const [ Categories, SetCategories] = useState([]);
     const [ Refetch, SetRefetch ] = useState(false);
+    const [ displayItemInfo, SetDisplayItemInfo ] = useState(false);
+    const [ currentDisplayItems, SetCurrentDisplayItems] = useState([]);
+    const [ emptyList, SetEmptyList ] = useState(true);
+    const [ shoppingList, SetShoppingList ] = useState([]);
 
+
+    /**
+     *  [categroy: [ [item, amt], [item,amt]]]
+     * 
+     */
+
+    useEffect( () => {
+        if(shoppingList.length != 0){
+            SetEmptyList(false)   
+        }
+
+    },[shoppingList]);
     
 
     useEffect(() => {
@@ -92,6 +110,11 @@ export default function Home() {
 
     const ItemCategory = (props) => {
 
+        const openDisplayItems = (itemname, itemimg, itemnote, itemcategory) => {
+            SetCurrentDisplayItems([itemname, itemimg, itemnote, itemcategory]);
+            SetDisplayItemInfo(true);
+        }
+
         return (
             <div className='item_category'>
                 <h3 >{props.Title}</h3>
@@ -100,10 +123,9 @@ export default function Home() {
                         return (
                             <div className='item_cell' key={index}>
                                 <div key={uuidv4()}>
-                                    <p onClick={() => alert(`${x[0]} - ${x[1]} - ${x[2]}`)}>{x[0]}</p>
+                                    <p onClick={() => openDisplayItems(x[0], x[1], x[2], props.Title)}>{x[0]}</p>
                                     <FontAwesomeIcon icon={faPlus} />
                                 </div>
-                               
                             </div>  
                         )
                     })}
@@ -113,9 +135,35 @@ export default function Home() {
         )
     }
 
+
+    const ListDisplay = () => {
+
+        if(emptyList){
+            return (
+                <div className='emptyList_root'>
+                    <p className='emptyListP'>No Items</p>
+                    <Image className='emptyListImg' src={EmptyLogo}/>
+                </div>
+            )
+        } else {
+            return (
+                <div></div>
+            )
+        }
+        
+    }
+    /**********************************  Main Components **********************************************/
+
     const ShoppingList = () => {
 
-        if(ShowAddItem){
+        if(displayItemInfo){
+            return (
+                <DisplayItem
+                    displayItems = {currentDisplayItems}
+                    closeDisplay= {SetDisplayItemInfo}
+                />
+            )
+        }else if(ShowAddItem){
             return (
                 <AddItem  
                     refetchBoolFunc = {SetRefetch}                
@@ -124,7 +172,6 @@ export default function Home() {
                 />
             )
         } else {
-
             return (
                 <div style={{ width: '2%'}}>
                     <div className='add_item_div'>
@@ -135,6 +182,8 @@ export default function Home() {
                             <Button onClick={show}>Add item</Button>
                         </div>
                     </div>
+
+                    <ListDisplay/>
     
     
                     
@@ -185,19 +234,7 @@ export default function Home() {
 
             {/************ Shopping List ************* */}
             <ShoppingList/>
-            
         </div>
     )
 }
 
-/**
- * <ItemCategory 
-        Title="Fruits And Vegetables" 
-        Items={ ["Avocado", "Banana", "Bunch of carrots 5pcs", "Chicken 1kg", "Pre-cooked corn 450g", "Mandarin Nadorcott", "Piele De Sapo Melon", "Watermelon"]}
-    />
-
-    <ItemCategory 
-        Title="Meat and Fish" 
-        Items={ ["Chicken leg box", "Chicken 1kg", "Pork fillets 450g", "Salmon 1kg"]}
-    />
- */
