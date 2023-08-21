@@ -3,7 +3,7 @@ import HeartPic from '../../assets/shoppingify-master/logo.svg';
 import WineLogo from '../../assets/shoppingify-master/source.svg';
 import EmptyLogo from '../../assets/shoppingify-master/empty.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faRotateLeft, faSquarePollVertical, faCartShopping, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faRotateLeft, faSquarePollVertical, faCartShopping, faPlus, faTrash, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/esm/Button';
@@ -28,6 +28,7 @@ export default function Home() {
     const [ currentDisplayItems, SetCurrentDisplayItems] = useState([]);
     const [ emptyList, SetEmptyList ] = useState(true);
     const [ shoppingList, SetShoppingList ] = useState({});
+    
 
 
     /**
@@ -180,11 +181,7 @@ export default function Home() {
         )
     }
 
-    const CurrentList = () => {
-        
-    }
-
-
+    
     const ListDisplay = () => {
 
         if(emptyList){
@@ -196,21 +193,167 @@ export default function Home() {
             )
         } else {
             return (
-                <div>
-                    
-                </div>
+                <div className='sl_root'>
+                    <h2 className='sl_title'>Shopping list</h2>
+                    <CurrentList/>
+                </div> 
             )
         }
         
     }
+
+    const CurrentList = () => {
+
+        const increaseCount = (itemcategory, item) => {
+            let temp = {...shoppingList};
+
+            temp[itemcategory].map((x, index) => {
+                if(x[0] === item){
+                    x[1] = x[1] + 1;
+                }
+
+                return "";
+            })
+
+            SetShoppingList(temp);
+            //console.log(item);
+        }
+
+        const decreaseCount = (itemcategory, item) => {
+            let temp = {...shoppingList};
+
+            temp[itemcategory].map((x, index) => {
+                if(x[0] === item){
+                    if(x[1] !== 1){
+                        x[1] = x[1] - 1;
+                    }
+                }
+
+                return "";
+            })
+
+            SetShoppingList(temp);
+        }
+
+        const deleteItemFromList = (itemcategory, item) => {
+
+            let temp = {...shoppingList};
+
+            let itemindex = 0;
+
+            temp[itemcategory].map((x, index) => {
+
+                if(x[0] !== item){
+                    itemindex += 1;
+                } else {
+                    temp[itemcategory].splice(itemindex, 1);
+                }
+
+                return "";
+            })
+
+            SetShoppingList(temp);
+        }
+
+        return(
+            <div>
+                {
+                    Object.keys(shoppingList).map((x, index) => {
+
+                        return (
+                            <div key={index}>
+                                <h3 className='sl_cat_title'>{x}</h3>
+                                {shoppingList[x].map((y, index) => {
+                                    return (
+                                        <div className='sl_items_div'>
+                                            <p className='sl_items_p' key={index}>{y[0]}</p>
+
+                                            <div className='sl_items_btn_div'>
+                                                <Button onClick={() => deleteItemFromList(x, y[0])}>
+                                                    <FontAwesomeIcon className='fa-1x' icon={faTrash} style={{ color: 'white'}} />
+                                                </Button>
+
+                                                <FontAwesomeIcon className='sl_icon' onClick={ () => decreaseCount(x, y[0])}  icon={faMinus}/>
+
+                                                <div className='sl_items_count'>
+                                                    <p key={index}>{y[1]} pcs</p>
+                                                </div>
+                                                
+                                                <FontAwesomeIcon className='sl_icon' onClick={() => increaseCount(x, y[0])} icon={faPlus}/>
+
+                                            </div> 
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+
+    
+
+   
+
     /**********************************  Main Components **********************************************/
 
     const ShoppingList = () => {
 
+        const [ shoppingListName, SetShoppingListName ] = useState("");
+        
+
+        const handleListName = (e) => {
+            SetShoppingListName(e.target.value);
+        }
+
+        const deleteItemFromList = (itemcategory, item) => {
+
+            let temp = {...shoppingList};
+
+            let itemindex = 0;
+
+            temp[itemcategory].map((x, index) => {
+
+                if(x[0] !== item){
+                    itemindex += 1;
+                } else {
+                    temp[itemcategory].splice(itemindex, 1);
+                }
+
+                return "";
+            })
+
+            SetShoppingList(temp);
+        }
+
+
+        const saveShoppingList = () => {
+            axios.post('http://localhost:5000/edit_list', {
+                USERID: userId,
+                Listname: shoppingListName,
+                ListObj: shoppingList,
+             }).then((response) => {
+                 if(response.status === 200){
+                    alert("List added");
+                    SetShoppingList({});
+                    SetShoppingListName("");
+                    SetEmptyList(true);
+                 } else {
+                    alert("Something went wrong!");   
+                 }
+             }).catch((error) => {
+                 console.log(error);
+             }) 
+        }
+
         if(displayItemInfo){
+
             return (
                 <DisplayItem
                     displayItems = {currentDisplayItems}
+                    deleteItemFunc = {deleteItemFromList}
                     closeDisplay= {SetDisplayItemInfo}
                 />
             )
@@ -237,13 +380,9 @@ export default function Home() {
                     <ListDisplay/>
     
     
-                    
-                    <div className='add_item_footer'>
-                        <div className='add_item_footer_search'>
-                            <Form.Control placeholder='Enter a name'/>
-                            <Button className='add_item_footer_button'>Save</Button>
-                        </div>
-                        
+                    <div className='add_item_footer'>                       
+                        <Form.Control placeholder='Enter a name' onChange={handleListName}/>  
+                        <Button className='add_item_footer_button' onClick={saveShoppingList}>Save</Button>                      
                     </div>
                 </div>
             )

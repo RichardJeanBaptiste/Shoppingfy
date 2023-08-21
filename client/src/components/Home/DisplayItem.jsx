@@ -30,7 +30,7 @@ export default function DisplayItem(props){
                 <LabelAndInfo className='di_info1' label='note' info={props.displayItems[2]}/>
 
                 <div className='di_confirmButtons'>
-                    <p>delete</p>
+                    <p onClick={() => props.deleteItemFunc(props.displayItems[3], props.displayItems[0])}>delete</p>
                     <Button>Add to list</Button>
                 </div>
 

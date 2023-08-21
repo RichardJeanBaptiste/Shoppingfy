@@ -16,9 +16,15 @@ Session(app)
 
 CORS(app, origins='http://localhost:3000')
 
-client = MongoClient(os.environ['MONGO_URI'])
-db = client['Users'] 
-collection = db['User'] 
+
+try:
+    client = MongoClient(os.environ['MONGO_URI'])
+    db = client['Users'] 
+    collection = db['User'] 
+except:
+    print("Mongo client failed to connect")
+
+
 
 
 @app.route("/register" , methods = ['GET','POST'])
@@ -98,7 +104,6 @@ def add_items():
     new_item = [data['New_Item'], data['IMG'], data["Note"]]
   
     try:
-        ### if category exists
         filter_query = { "_id": ObjectId(userid)}
         update_query = {"$push": { f"items.{category}" : new_item}}
         collection.update_one(filter_query, update_query)

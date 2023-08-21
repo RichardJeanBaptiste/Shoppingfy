@@ -12,7 +12,7 @@ export default function AddItem(props) {
     const [ name, setName ] = useState("");
     const [ note, setNote ] = useState("");
     const [ imgUrl, setImgUrl ] = useState("");
-    const [ category, setCategroy ] = useState("");
+    const [ category, setCategory ] = useState("");
     const [displayCat, setDisplayCat] = useState("none");
     
 
@@ -22,7 +22,7 @@ export default function AddItem(props) {
             setDisplayCat("block");
         } else {
             setDisplayCat("none");
-            setCategroy(e.target.value);
+            setCategory(e.target.value);
         }
     }
 
@@ -39,7 +39,7 @@ export default function AddItem(props) {
     }
 
     const categoryHandler = (e) => {
-        setCategroy(e.target.value);
+        setCategory(e.target.value);
     }
 
     const submitHandler = () => {
